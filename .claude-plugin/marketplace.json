@@ -1,0 +1,48 @@
+{
+  "name": "perceptron-mcp-server",
+  "owner": {
+    "name": "Perceptron AI",
+    "email": "support@perceptron.inc"
+  },
+  "metadata": {
+    "description": "Official MCP server for the Perceptron AI platform — high-accuracy visual perception powered by compact vision-language models",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "perceptron",
+      "source": "./",
+      "description": "Perceptron MCP server for high-accuracy visual perception powered by fast, efficient vision-language models",
+      "version": "0.1.0",
+      "author": {
+        "name": "Perceptron AI",
+        "email": "support@perceptron.inc"
+      },
+      "homepage": "https://perceptron.inc",
+      "repository": "https://github.com/perceptron-ai/mcp-server",
+      "license": "Apache-2.0",
+      "keywords": [
+        "mcp",
+        "vision",
+        "ocr",
+        "captioning",
+        "object-detection",
+        "perceptron",
+        "multimodal",
+        "ai"
+      ],
+      "category": "productivity",
+      "strict": false,
+      "mcpServers": {
+        "perceptron": {
+          "type": "stdio",
+          "command": "npx",
+          "args": ["-y", "@perceptron-ai/mcp-server"],
+          "env": {
+            "PERCEPTRON_API_KEY": "${PERCEPTRON_API_KEY}"
+          }
+        }
+      }
+    }
+  ]
+}
