@@ -4,12 +4,12 @@ import { getRemoteClient, resolveImageUrl, extractText, isToolError } from "./ap
 
 const generationParams = {
   reasoning: z.boolean().optional().describe("Enable reasoning/chain-of-thought output"),
-  temperature: z.number().optional().describe("Sampling temperature"),
-  top_p: z.number().optional().describe("Nucleus sampling threshold"),
-  top_k: z.number().int().optional().describe("Top-k sampling"),
+  temperature: z.number().min(0).optional().describe("Sampling temperature"),
+  top_p: z.number().positive().max(1).optional().describe("Nucleus sampling threshold"),
+  top_k: z.number().int().positive().optional().describe("Top-k sampling"),
   frequency_penalty: z.number().optional().describe("Frequency penalty"),
   presence_penalty: z.number().optional().describe("Presence penalty"),
-  max_tokens: z.number().int().optional().describe("Maximum tokens to generate"),
+  max_tokens: z.number().int().positive().optional().describe("Maximum tokens to generate"),
 };
 
 const outputFormatEnum = z.enum(["text", "point", "box", "polygon"]);
