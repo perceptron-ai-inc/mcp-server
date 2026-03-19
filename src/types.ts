@@ -20,7 +20,8 @@ export interface QuestionRequest extends GenerationParams {
 export interface CaptionRequest extends GenerationParams {
   image_url: string;
   model: string;
-  style: "concise" | "detailed";
+  /** Defaults to "concise" */
+  style?: "concise" | "detailed";
   output_format?: "text" | "point" | "box" | "polygon";
 }
 

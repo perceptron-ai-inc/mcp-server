@@ -106,7 +106,7 @@ Local files are automatically uploaded and made available to the model. Supporte
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().describe("Model ID from list_resources"),
-        style: z.enum(["concise", "detailed"]).describe("Caption style"),
+        style: z.enum(["concise", "detailed"]).default("concise").describe("Caption style (default: concise)"),
         output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
         ...generationParams,
       },
