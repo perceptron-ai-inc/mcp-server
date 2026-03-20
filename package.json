@@ -14,11 +14,11 @@
   ],
   "homepage": "https://perceptron.inc",
   "bugs": {
-    "url": "https://github.com/perceptron-ai/mcp-server/issues"
+    "url": "https://github.com/perceptron-ai-inc/mcp-server/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/perceptron-ai/mcp-server.git"
+    "url": "git+https://github.com/perceptron-ai-inc/mcp-server.git"
   },
   "license": "Apache-2.0",
   "author": "Perceptron AI",
