@@ -1,5 +1,11 @@
 # Perceptron AI MCP Server
 
+[![Install in Cursor](https://img.shields.io/badge/Install_in_Cursor-000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=perceptron&config=eyJ0eXBlIjoic3RkaW8iLCJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBwZXJjZXB0cm9uLWFpL21jcC1zZXJ2ZXJAbGF0ZXN0Il0sImVudiI6eyJQRVJDRVBUUk9OX0FQSV9LRVkiOiIifX0=)
+&nbsp;
+[![Install in VS Code](https://img.shields.io/badge/Install_in_VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=perceptron&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40perceptron-ai/mcp-server%40latest%22%5D%2C%22env%22%3A%7B%22PERCEPTRON_API_KEY%22%3A%22%22%7D%7D)
+&nbsp;
+[![npm](https://img.shields.io/npm/v/%40perceptron-ai%2Fmcp-server?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/@perceptron-ai/mcp-server)
+
 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for the [Perceptron AI](https://perceptron.inc) platform — high-accuracy visual perception powered by fast, efficient vision-language models.
 
 Give any MCP-compatible agent direct access to Perceptron's Isaac model family for visual question answering, captioning, OCR, and object detection.
