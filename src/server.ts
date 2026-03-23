@@ -51,7 +51,7 @@ When working with tool results, write down any important information you might n
 
 ## Discovering models
 
-Use list_resources to discover available models and their capabilities. Always use a model ID returned by list_resources — never guess or invent model names.
+Use list_resources to discover available models and their capabilities, or the list_models tool as a fallback. Always use a model ID returned by either — never guess or invent model names.
 
 ## Working with images
 
@@ -80,11 +80,32 @@ Local files are automatically uploaded and made available to the model. Supporte
     }
   );
 
+  // --- list_models tool (workaround for clients that don't support resources) ---
+  server.registerTool(
+    "list_models",
+    {
+      description: "List available Perceptron AI models and their capabilities. This is a fallback for clients that don't support resources — prefer list_resources when available.",
+      inputSchema: {},
+    },
+    async () => {
+      const client = await getRemoteClient();
+      const { resources } = await client.listResources();
+      const models = resources.map((r) => ({
+        id: r.uri.replace("perceptron://models/", ""),
+        name: r.name,
+        description: r.description,
+      }));
+      return {
+        content: [{ type: "text", text: JSON.stringify(models, null, 2) }],
+      };
+    }
+  );
+
   // --- question tool ---
   server.registerTool(
     "question",
     {
-      description: "Ask a question about an image. Accepts a URL or local file path. Use list_resources to get available model IDs.",
+      description: "Ask a question about an image. Accepts a URL or local file path. Use list_resources or the list_models tool to get available model IDs.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().describe("Model ID from list_resources"),
@@ -102,7 +123,7 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "caption",
     {
-      description: "Generate a caption for an image. Accepts a URL or local file path. Use list_resources to get available model IDs.",
+      description: "Generate a caption for an image. Accepts a URL or local file path. Use list_resources or the list_models tool to get available model IDs.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().describe("Model ID from list_resources"),
@@ -120,7 +141,7 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "ocr",
     {
-      description: "Extract text from an image using OCR. Accepts a URL or local file path. Use list_resources to get available model IDs.",
+      description: "Extract text from an image using OCR. Accepts a URL or local file path. Use list_resources or the list_models tool to get available model IDs.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().describe("Model ID from list_resources"),
@@ -138,7 +159,7 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "detect",
     {
-      description: "Detect objects in an image. Accepts a URL or local file path. Use list_resources to get available model IDs.",
+      description: "Detect objects in an image. Accepts a URL or local file path. Use list_resources or the list_models tool to get available model IDs.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().describe("Model ID from list_resources"),
