@@ -96,7 +96,7 @@ Local files are automatically uploaded and made available to the model. Supporte
         description: r.description,
       }));
       return {
-        content: [{ type: "text", text: JSON.stringify(models, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(models) }],
       };
     }
   );
