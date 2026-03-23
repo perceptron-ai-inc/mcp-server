@@ -21,9 +21,9 @@ Give any MCP-compatible agent direct access to Perceptron's Isaac model family f
 
 All tools accept either a **URL** (`https://...`) or a **local file path** (`/path/to/image.jpg`, `~/photos/image.png`). Local files are automatically uploaded to the Perceptron platform before analysis. Supported formats: JPEG, PNG, WebP.
 
-### Model Discovery
+### Model Selection
 
-Each tool requires a `model` parameter. Use `list_resources` to discover available Isaac models and their capabilities.
+The `model` parameter is optional — if omitted, the latest Perceptron model is used. Use `list_resources` to discover all available models and their capabilities.
 
 ## Configuration
 

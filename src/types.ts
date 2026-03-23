@@ -12,14 +12,16 @@ export interface GenerationParams {
 
 export interface QuestionRequest extends GenerationParams {
   image_url: string;
-  model: string;
+  /** Defaults to latest Perceptron model */
+  model?: string;
   question: string;
   output_format?: "text" | "point" | "box" | "polygon";
 }
 
 export interface CaptionRequest extends GenerationParams {
   image_url: string;
-  model: string;
+  /** Defaults to latest Perceptron model */
+  model?: string;
   /** Defaults to "concise" */
   style?: "concise" | "detailed";
   output_format?: "text" | "point" | "box" | "polygon";
@@ -27,14 +29,16 @@ export interface CaptionRequest extends GenerationParams {
 
 export interface OcrRequest extends GenerationParams {
   image_url: string;
-  model: string;
+  /** Defaults to latest Perceptron model */
+  model?: string;
   mode: "plain" | "markdown" | "html";
   prompt?: string;
 }
 
 export interface DetectRequest extends GenerationParams {
   image_url: string;
-  model: string;
+  /** Defaults to latest Perceptron model */
+  model?: string;
   classes?: string[];
 }
 
