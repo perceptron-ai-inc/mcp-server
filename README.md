@@ -18,7 +18,7 @@ Give any MCP-compatible agent direct access to Perceptron's Isaac model family f
 | `caption` | Image captioning — generate concise or detailed descriptions |
 | `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML |
 | `detect` | Object detection — locate and classify objects, optionally filtered by class |
-| `list_models` | List available Perceptron AI models and their capabilities |
+| `list_models` | List available Perceptron models and their capabilities |
 
 All tools accept either a **URL** (`https://...`) or a **local file path** (`/path/to/image.jpg`, `~/photos/image.png`). Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, and WebP.
 

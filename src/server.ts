@@ -84,7 +84,7 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "list_models",
     {
-      description: "List available Perceptron AI models and their capabilities.",
+      description: "List available Perceptron models and their capabilities.",
       inputSchema: {},
     },
     async () => {
