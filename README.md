@@ -24,7 +24,7 @@ All tools accept either a **URL** (`https://...`) or a **local file path** (`/pa
 
 ### Model Selection
 
-The `model` parameter is optional — if omitted, the Perceptron default model is used. Call `list_models` to discover all available models and their capabilities.
+The `model` parameter is optional — if omitted, the default Perceptron model is used. Call `list_models` to discover all available models and their capabilities.
 
 ## Configuration
 

@@ -12,7 +12,7 @@ export interface GenerationParams {
 
 export interface QuestionRequest extends GenerationParams {
   image_url: string;
-  /** Uses the Perceptron default model if omitted */
+  /** Uses the default Perceptron model if omitted */
   model?: string;
   question: string;
   output_format?: "text" | "point" | "box" | "polygon";
@@ -20,7 +20,7 @@ export interface QuestionRequest extends GenerationParams {
 
 export interface CaptionRequest extends GenerationParams {
   image_url: string;
-  /** Uses the Perceptron default model if omitted */
+  /** Uses the default Perceptron model if omitted */
   model?: string;
   /** Defaults to "concise" */
   style?: "concise" | "detailed";
@@ -29,7 +29,7 @@ export interface CaptionRequest extends GenerationParams {
 
 export interface OcrRequest extends GenerationParams {
   image_url: string;
-  /** Uses the Perceptron default model if omitted */
+  /** Uses the default Perceptron model if omitted */
   model?: string;
   mode: "plain" | "markdown" | "html";
   prompt?: string;
@@ -37,7 +37,7 @@ export interface OcrRequest extends GenerationParams {
 
 export interface DetectRequest extends GenerationParams {
   image_url: string;
-  /** Uses the Perceptron default model if omitted */
+  /** Uses the default Perceptron model if omitted */
   model?: string;
   classes?: string[];
 }

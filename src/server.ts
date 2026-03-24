@@ -51,7 +51,7 @@ When working with tool results, write down any important information you might n
 
 ## Discovering models
 
-Call list_models to see available models. The model parameter is optional — if omitted, the Perceptron default model is used.
+Call list_models to see available models. The model parameter is optional — if omitted, the default Perceptron model is used.
 
 ## Working with images
 
@@ -108,7 +108,7 @@ Local files are automatically uploaded and made available to the model. Supporte
       description: "Ask a question about an image. Accepts a URL or local file path.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
-        model: z.string().optional().describe("Model ID (uses the Perceptron default model if omitted)"),
+        model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         question: z.string().describe("Question to ask about the image"),
         output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
         ...generationParams,
@@ -126,7 +126,7 @@ Local files are automatically uploaded and made available to the model. Supporte
       description: "Generate a caption for an image. Accepts a URL or local file path.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
-        model: z.string().optional().describe("Model ID (uses the Perceptron default model if omitted)"),
+        model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         style: z.enum(["concise", "detailed"]).default("concise").describe("Caption style (default: concise)"),
         output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
         ...generationParams,
@@ -144,7 +144,7 @@ Local files are automatically uploaded and made available to the model. Supporte
       description: "Extract text from an image using OCR. Accepts a URL or local file path.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
-        model: z.string().optional().describe("Model ID (uses the Perceptron default model if omitted)"),
+        model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         mode: z.enum(["plain", "markdown", "html"]).describe("OCR output mode"),
         prompt: z.string().optional().describe("Optional prompt to guide OCR extraction"),
         ...generationParams,
@@ -162,7 +162,7 @@ Local files are automatically uploaded and made available to the model. Supporte
       description: "Detect objects in an image. Accepts a URL or local file path.",
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
-        model: z.string().optional().describe("Model ID (uses the Perceptron default model if omitted)"),
+        model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         classes: z.array(z.string()).optional().describe("Object classes to detect (omit for open-vocabulary detection)"),
         ...generationParams,
       },
