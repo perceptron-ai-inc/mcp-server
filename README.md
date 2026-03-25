@@ -1,4 +1,4 @@
-# Perceptron AI MCP Server
+# Perceptron Vision MCP Server
 
 [![Install in Cursor](https://img.shields.io/badge/Install_in_Cursor-000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=perceptron&config=eyJ0eXBlIjoic3RkaW8iLCJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBwZXJjZXB0cm9uLWFpL21jcC1zZXJ2ZXJAbGF0ZXN0Il0sImVudiI6eyJQRVJDRVBUUk9OX0FQSV9LRVkiOiIifX0=)
 &nbsp;
@@ -6,7 +6,7 @@
 &nbsp;
 [![npm](https://img.shields.io/npm/v/%40perceptron-ai%2Fmcp-server?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/@perceptron-ai/mcp-server)
 
-[Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for the [Perceptron AI](https://perceptron.inc) platform — high-accuracy visual perception powered by fast, efficient vision-language models.
+A vision MCP server by [Perceptron](https://perceptron.inc) — high-accuracy vision AI over the [Model Context Protocol](https://modelcontextprotocol.io), powered by fast, efficient vision-language models.
 
 Give any MCP-compatible agent direct access to Perceptron's Isaac model family for visual question answering, captioning, OCR, and object detection.
 
@@ -20,7 +20,7 @@ Give any MCP-compatible agent direct access to Perceptron's Isaac model family f
 | `detect` | Object detection — locate and classify objects, optionally filtered by class |
 | `list_models` | List available Perceptron models and their capabilities |
 
-All tools accept either a **URL** (`https://...`) or a **local file path** (`/path/to/image.jpg`, `~/photos/image.png`). Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, and WebP.
+All tools accept a **URL** (`https://...`), a **local file path** (`/path/to/image.jpg`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`). Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, and WebP.
 
 ### Model Selection
 
@@ -32,9 +32,9 @@ The `model` parameter is optional — if omitted, the default Perceptron model i
 
 | Variable | Description |
 |----------|-------------|
-| `PERCEPTRON_API_KEY` | Your Perceptron AI API key |
+| `PERCEPTRON_API_KEY` | Your Perceptron API key |
 
-Get your API key from the [Perceptron AI dashboard](https://perceptron.inc).
+Get your API key from the [Perceptron dashboard](https://perceptron.inc).
 
 ### Optional
 
@@ -59,7 +59,7 @@ Add to your Claude Desktop configuration file (`~/Library/Application Support/Cl
   "mcpServers": {
     "perceptron": {
       "command": "npx",
-      "args": ["-y", "@perceptron-ai/mcp-server"],
+      "args": ["-y", "@perceptron-ai/mcp-server@latest"],
       "env": {
         "PERCEPTRON_API_KEY": "your-api-key"
       }
@@ -77,7 +77,7 @@ Add to your Cursor MCP configuration (`.cursor/mcp.json`):
   "mcpServers": {
     "perceptron": {
       "command": "npx",
-      "args": ["-y", "@perceptron-ai/mcp-server"],
+      "args": ["-y", "@perceptron-ai/mcp-server@latest"],
       "env": {
         "PERCEPTRON_API_KEY": "your-api-key"
       }
@@ -96,7 +96,7 @@ Add to `.vscode/mcp.json` in your workspace:
     "perceptron": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@perceptron-ai/mcp-server"],
+      "args": ["-y", "@perceptron-ai/mcp-server@latest"],
       "env": {
         "PERCEPTRON_API_KEY": "your-api-key"
       }
@@ -107,14 +107,32 @@ Add to `.vscode/mcp.json` in your workspace:
 
 ### Windsurf
 
-Add to your Windsurf MCP configuration:
+Add to your Windsurf MCP configuration (`~/.codeium/windsurf/mcp_config.json`):
 
 ```json
 {
   "mcpServers": {
     "perceptron": {
       "command": "npx",
-      "args": ["-y", "@perceptron-ai/mcp-server"],
+      "args": ["-y", "@perceptron-ai/mcp-server@latest"],
+      "env": {
+        "PERCEPTRON_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+### Google Antigravity
+
+Add to your Antigravity MCP configuration (`~/.gemini/antigravity/mcp_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "perceptron": {
+      "command": "npx",
+      "args": ["-y", "@perceptron-ai/mcp-server@latest"],
       "env": {
         "PERCEPTRON_API_KEY": "your-api-key"
       }
@@ -126,7 +144,7 @@ Add to your Windsurf MCP configuration:
 ### Codex
 
 ```bash
-codex mcp add perceptron -- npx -y @perceptron-ai/mcp-server@latest
+codex mcp add perceptron --env PERCEPTRON_API_KEY=your-api-key -- npx -y @perceptron-ai/mcp-server@latest
 ```
 
 ### Generic MCP Clients
@@ -134,6 +152,8 @@ codex mcp add perceptron -- npx -y @perceptron-ai/mcp-server@latest
 ```bash
 PERCEPTRON_API_KEY=your-api-key npx -y @perceptron-ai/mcp-server@latest
 ```
+
+**Note:** The `@latest` tag ensures you always get the newest models and tools. To pin a specific version, replace `@latest` with a version number from [npm](https://www.npmjs.com/package/@perceptron-ai/mcp-server) (e.g. `@perceptron-ai/mcp-server@0.1.0`).
 
 ## How Local Files Work
 

@@ -5,10 +5,13 @@
   "description": "Perceptron MCP server for high-accuracy visual perception powered by fast, efficient vision-language models",
   "keywords": [
     "ai",
+    "vision-ai",
     "perceptron",
     "mcp",
+    "mcp-server",
     "modelcontextprotocol",
     "vision",
+    "object-detection",
     "ocr",
     "multimodal"
   ],
