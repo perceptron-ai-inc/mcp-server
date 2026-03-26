@@ -42,7 +42,7 @@ export function createPerceptronServer(): McpServer {
   const server = new McpServer(
     {
       name: "perceptron-mcp",
-      version: "0.1.2",
+      version: "0.1.5",
     },
     {
       instructions: `Perceptron MCP Server — high-accuracy visual perception powered by fast, efficient vision-language models.
@@ -85,6 +85,7 @@ Local files are automatically uploaded and made available to the model. Supporte
     "list_models",
     {
       description: "List available Perceptron models and their capabilities.",
+      annotations: { readOnlyHint: true },
       inputSchema: {},
     },
     async () => {
@@ -106,6 +107,7 @@ Local files are automatically uploaded and made available to the model. Supporte
     "question",
     {
       description: "Ask a question about an image. Accepts a URL or local file path.",
+      annotations: { readOnlyHint: true },
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
@@ -124,6 +126,7 @@ Local files are automatically uploaded and made available to the model. Supporte
     "caption",
     {
       description: "Generate a caption for an image. Accepts a URL or local file path.",
+      annotations: { readOnlyHint: true },
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
@@ -142,6 +145,7 @@ Local files are automatically uploaded and made available to the model. Supporte
     "ocr",
     {
       description: "Extract text from an image using OCR. Accepts a URL or local file path.",
+      annotations: { readOnlyHint: true },
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
@@ -160,6 +164,7 @@ Local files are automatically uploaded and made available to the model. Supporte
     "detect",
     {
       description: "Detect objects in an image. Accepts a URL or local file path.",
+      annotations: { readOnlyHint: true },
       inputSchema: {
         image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),

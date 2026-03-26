@@ -1,14 +1,17 @@
 {
   "name": "@perceptron-ai/mcp-server",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "mcpName": "ai.perceptron/mcp-server",
   "description": "Perceptron MCP server for high-accuracy visual perception powered by fast, efficient vision-language models",
   "keywords": [
     "ai",
+    "vision-ai",
     "perceptron",
     "mcp",
+    "mcp-server",
     "modelcontextprotocol",
     "vision",
+    "object-detection",
     "ocr",
     "multimodal"
   ],
