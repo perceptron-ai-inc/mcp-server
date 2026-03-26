@@ -153,7 +153,7 @@ codex mcp add perceptron --env PERCEPTRON_API_KEY=your-api-key -- npx -y @percep
 PERCEPTRON_API_KEY=your-api-key npx -y @perceptron-ai/mcp-server@latest
 ```
 
-**Note:** The `@latest` tag ensures you always get the newest models and tools. To pin a specific version, replace `@latest` with a version number from [npm](https://www.npmjs.com/package/@perceptron-ai/mcp-server) (e.g. `@perceptron-ai/mcp-server@0.1.0`).
+**Note:** The `@latest` tag ensures you always get the newest models and tools. To pin a specific version, replace `@latest` with a version number from [npm](https://www.npmjs.com/package/@perceptron-ai/mcp-server) (e.g. `@perceptron-ai/mcp-server@0.1.5`).
 
 ## How Local Files Work
 
