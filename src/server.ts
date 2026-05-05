@@ -1,6 +1,6 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { getRemoteClient, resolveImageUrl, extractText, isToolError } from "./api.js";
+import { getRemoteClient, resolveMediaUrl, extractText, isToolError } from "./api.js";
 
 const generationParams = {
   reasoning: z.boolean().optional().describe("Enable reasoning/chain-of-thought output"),
@@ -13,25 +13,20 @@ const generationParams = {
 };
 
 const outputFormatEnum = z.enum(["text", "point", "box", "polygon"]);
+const modalityEnum = z.enum(["image", "video"]);
 
-/**
- * Resolves the image_url (uploading if local), then calls the named tool on the
- * remote MCP server and returns the result in MCP tool-result format.
- */
-async function callWithImage(
+const mediaParams = {
+  media_url: z.string().describe("Media URL (https://...) or local file path for an image or video"),
+  modality: modalityEnum.describe("Media modality: image or video"),
+};
+
+/** Forward a tool call to the remote server and shape it into MCP tool-result format. */
+async function callRemote(
   toolName: string,
-  params: Record<string, unknown>
+  args: Record<string, unknown>
 ): Promise<{ content: Array<{ type: "text"; text: string }>; isError?: boolean }> {
-  // Resolve local file path → remote URL if needed
-  const { image_url, ...rest } = params;
-  const resolvedUrl = await resolveImageUrl(image_url as string);
-
   const client = await getRemoteClient();
-  const result = await client.callTool({
-    name: toolName,
-    arguments: { image_url: resolvedUrl, ...rest },
-  });
-
+  const result = await client.callTool({ name: toolName, arguments: args });
   return {
     content: [{ type: "text", text: extractText(result) }],
     isError: isToolError(result) || undefined,
@@ -53,13 +48,16 @@ When working with tool results, write down any important information you might n
 
 Call list_models to see available models. The model parameter is optional — if omitted, the default Perceptron model is used.
 
-## Working with images
+## Working with images and videos
 
-Tools accept either:
-- A URL (https://...) pointing to an image
-- A local file path (/path/to/image.jpg, ~/photos/image.png)
+The question, caption, and detect tools accept image or video inputs and require an explicit \`modality\` ("image" or "video"). The ocr tool is image-only.
 
-Local files are automatically uploaded and made available to the model. Supported formats: JPEG, PNG, WebP.`,
+Inputs may be:
+- A URL (https://...) pointing to media
+- A local file path (/path/to/clip.mp4, ~/photos/image.png)
+- A base64 data URI (data:image/jpeg;base64,...)
+
+Local files are automatically uploaded and made available to the model. Supported formats: JPEG, PNG, WebP, MP4, WebM.`,
     }
   );
 
@@ -106,18 +104,18 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "question",
     {
-      description: "Ask a question about an image. Accepts a URL or local file path.",
+      description: "Ask a question about an image or video. Accepts a URL or local file path.",
       annotations: { readOnlyHint: true },
       inputSchema: {
-        image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
+        ...mediaParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
-        question: z.string().describe("Question to ask about the image"),
+        question: z.string().describe("Question to ask about the media"),
         output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
         ...generationParams,
       },
     },
-    async (params) => {
-      return callWithImage("question", params);
+    async ({ media_url, ...rest }) => {
+      return callRemote("question", { media_url: await resolveMediaUrl(media_url), ...rest });
     }
   );
 
@@ -125,18 +123,18 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "caption",
     {
-      description: "Generate a caption for an image. Accepts a URL or local file path.",
+      description: "Generate a caption for an image or video. Accepts a URL or local file path.",
       annotations: { readOnlyHint: true },
       inputSchema: {
-        image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
+        ...mediaParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         style: z.enum(["concise", "detailed"]).default("concise").describe("Caption style (default: concise)"),
         output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
         ...generationParams,
       },
     },
-    async (params) => {
-      return callWithImage("caption", params);
+    async ({ media_url, ...rest }) => {
+      return callRemote("caption", { media_url: await resolveMediaUrl(media_url), ...rest });
     }
   );
 
@@ -154,8 +152,8 @@ Local files are automatically uploaded and made available to the model. Supporte
         ...generationParams,
       },
     },
-    async (params) => {
-      return callWithImage("ocr", params);
+    async ({ image_url, ...rest }) => {
+      return callRemote("ocr", { image_url: await resolveMediaUrl(image_url), ...rest });
     }
   );
 
@@ -163,17 +161,17 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "detect",
     {
-      description: "Detect objects in an image. Accepts a URL or local file path.",
+      description: "Detect objects in an image or video. Accepts a URL or local file path.",
       annotations: { readOnlyHint: true },
       inputSchema: {
-        image_url: z.string().describe("Image URL (https://...) or local file path (/path/to/image.jpg)"),
+        ...mediaParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         classes: z.array(z.string()).optional().describe("Object classes to detect (omit for open-vocabulary detection)"),
         ...generationParams,
       },
     },
-    async (params) => {
-      return callWithImage("detect", params);
+    async ({ media_url, ...rest }) => {
+      return callRemote("detect", { media_url: await resolveMediaUrl(media_url), ...rest });
     }
   );
 
