@@ -12,7 +12,7 @@ const generationParams = {
   max_tokens: z.number().int().positive().optional().describe("Maximum tokens to generate"),
 };
 
-const outputFormatEnum = z.enum(["text", "point", "box", "polygon"]);
+const outputFormatEnum = z.enum(["point", "box", "polygon", "clip"]);
 const modalityEnum = z.enum(["image", "video"]);
 
 const mediaParams = {
@@ -110,7 +110,7 @@ Local files are automatically uploaded and made available to the model. Supporte
         ...mediaParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         question: z.string().describe("Question to ask about the media"),
-        output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
+        output_format: outputFormatEnum.optional().describe("Output format: point, box, polygon, or clip"),
         ...generationParams,
       },
     },
@@ -129,7 +129,7 @@ Local files are automatically uploaded and made available to the model. Supporte
         ...mediaParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         style: z.enum(["concise", "detailed"]).default("concise").describe("Caption style (default: concise)"),
-        output_format: outputFormatEnum.optional().describe("Output format: text, point, box, or polygon"),
+        output_format: outputFormatEnum.optional().describe("Output format: point, box, polygon, or clip"),
         ...generationParams,
       },
     },

@@ -21,7 +21,7 @@ export interface QuestionRequest extends GenerationParams, MediaParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   question: string;
-  output_format?: "text" | "point" | "box" | "polygon";
+  output_format?: "point" | "box" | "polygon" | "clip";
 }
 
 export interface CaptionRequest extends GenerationParams, MediaParams {
@@ -29,7 +29,7 @@ export interface CaptionRequest extends GenerationParams, MediaParams {
   model?: string;
   /** Defaults to "concise" */
   style?: "concise" | "detailed";
-  output_format?: "text" | "point" | "box" | "polygon";
+  output_format?: "point" | "box" | "polygon" | "clip";
 }
 
 export interface OcrRequest extends GenerationParams {
