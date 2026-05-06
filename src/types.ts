@@ -1,5 +1,7 @@
 // Request/response types mirroring the remote Perceptron MCP server's types.rs
 
+export type Modality = "image" | "video";
+
 export interface GenerationParams {
   reasoning?: boolean;
   temperature?: number;
@@ -10,21 +12,24 @@ export interface GenerationParams {
   max_tokens?: number;
 }
 
-export interface QuestionRequest extends GenerationParams {
-  image_url: string;
+export interface MediaParams {
+  media_url: string;
+  modality: Modality;
+}
+
+export interface QuestionRequest extends GenerationParams, MediaParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   question: string;
-  output_format?: "text" | "point" | "box" | "polygon";
+  output_format?: "point" | "box" | "polygon" | "clip";
 }
 
-export interface CaptionRequest extends GenerationParams {
-  image_url: string;
+export interface CaptionRequest extends GenerationParams, MediaParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   /** Defaults to "concise" */
   style?: "concise" | "detailed";
-  output_format?: "text" | "point" | "box" | "polygon";
+  output_format?: "point" | "box" | "polygon" | "clip";
 }
 
 export interface OcrRequest extends GenerationParams {
@@ -35,8 +40,7 @@ export interface OcrRequest extends GenerationParams {
   prompt?: string;
 }
 
-export interface DetectRequest extends GenerationParams {
-  image_url: string;
+export interface DetectRequest extends GenerationParams, MediaParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   classes?: string[];

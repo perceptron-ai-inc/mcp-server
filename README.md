@@ -8,19 +8,19 @@
 
 A vision MCP server by [Perceptron](https://perceptron.inc) — high-accuracy vision AI over the [Model Context Protocol](https://modelcontextprotocol.io), powered by fast, efficient vision-language models.
 
-Give any MCP-compatible agent direct access to Perceptron's Isaac model family for visual question answering, captioning, OCR, and object detection.
+Give any MCP-compatible agent direct access to Perceptron's Isaac model family for visual question answering, captioning, OCR, and object detection over images and videos.
 
 ## Available Tools
 
 | Tool | Description |
 |------|-------------|
-| `question` | Visual question answering — ask a question about an image and get a structured response |
-| `caption` | Image captioning — generate concise or detailed descriptions |
-| `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML |
-| `detect` | Object detection — locate and classify objects, optionally filtered by class |
+| `question` | Visual question answering — ask a question about an image or video (requires `modality`) |
+| `caption` | Captioning — generate concise or detailed descriptions of an image or video (requires `modality`) |
+| `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML (image-only) |
+| `detect` | Object detection — locate and classify objects in an image or video, optionally filtered by class (requires `modality`) |
 | `list_models` | List available Perceptron models and their capabilities |
 
-All tools accept a **URL** (`https://...`), a **local file path** (`/path/to/image.jpg`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`). Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, and WebP.
+`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`) for images or videos, and require a `modality` parameter (`"image"` or `"video"`). `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
 
 ### Model Selection
 
@@ -157,7 +157,7 @@ PERCEPTRON_API_KEY=your-api-key npx -y @perceptron-ai/mcp-server@latest
 
 ## How Local Files Work
 
-When you pass a local file path as `image_url`, the server transparently:
+When you pass a local file path as `media_url` (or `image_url` for `ocr`), the server transparently:
 
 1. Reads the file from disk
 2. Requests a presigned upload URL from the Perceptron platform
@@ -165,7 +165,7 @@ When you pass a local file path as `image_url`, the server transparently:
 4. Obtains a presigned download URL
 5. Passes the download URL to the model for analysis
 
-This means you can analyze images on your machine without manual upload steps.
+This means you can analyze images and videos on your machine without manual upload steps.
 
 ## Troubleshooting
 

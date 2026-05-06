@@ -21,6 +21,11 @@ describe("mime.getType", () => {
     expect(mime.getType("bmp")).toBe("image/bmp");
   });
 
+  it("resolves supported video extensions", () => {
+    expect(mime.getType("mp4")).toBe("video/mp4");
+    expect(mime.getType("webm")).toBe("video/webm");
+  });
+
   it("returns null for unknown extensions", () => {
     expect(mime.getType("xyz123")).toBeNull();
     expect(mime.getType("")).toBeNull();

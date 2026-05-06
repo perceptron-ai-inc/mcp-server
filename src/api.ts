@@ -84,28 +84,28 @@ export function isToolError(result: Awaited<ReturnType<Client["callTool"]>>): bo
 /**
  * Determines if a string is a local file path (vs a URL or data URI).
  */
-export function isLocalPath(imageUrl: string): boolean {
-  if (imageUrl.startsWith("data:")) return false;
-  if (/^https?:\/\//.test(imageUrl)) return false;
+export function isLocalPath(mediaUrl: string): boolean {
+  if (mediaUrl.startsWith("data:")) return false;
+  if (/^https?:\/\//.test(mediaUrl)) return false;
   return true;
 }
 
 /**
- * Resolves an image_url to a remote URL. If it's a local file path, uploads it
- * via the remote MCP server's presigned URL tools, then returns the download URL.
- * If it's already a URL, returns as-is.
+ * Resolves a media URL (image or video) to a remote URL. If it's a local file
+ * path, uploads it via the remote MCP server's presigned URL tools, then
+ * returns the download URL. If it's already a URL, returns as-is.
  */
-export async function resolveImageUrl(imageUrl: string): Promise<string> {
-  if (!isLocalPath(imageUrl)) {
-    return imageUrl;
+export async function resolveMediaUrl(mediaUrl: string): Promise<string> {
+  if (!isLocalPath(mediaUrl)) {
+    return mediaUrl;
   }
 
   const client = await getRemoteClient();
 
   // Resolve ~ to home directory
-  const filePath = imageUrl.startsWith("~")
-    ? imageUrl.replace("~", process.env.HOME || "")
-    : imageUrl;
+  const filePath = mediaUrl.startsWith("~")
+    ? mediaUrl.replace("~", process.env.HOME || "")
+    : mediaUrl;
 
   // Read file and determine content type
   const ext = extname(filePath).toLowerCase();
