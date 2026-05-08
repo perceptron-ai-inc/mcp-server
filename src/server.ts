@@ -37,7 +37,7 @@ export function createPerceptronServer(): McpServer {
   const server = new McpServer(
     {
       name: "perceptron-mcp",
-      version: "0.1.5",
+      version: "0.2.0",
     },
     {
       instructions: `Perceptron MCP Server — high-accuracy visual perception powered by fast, efficient vision-language models.
