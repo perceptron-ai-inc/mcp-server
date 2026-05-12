@@ -8,23 +8,27 @@
 
 A vision MCP server by [Perceptron](https://perceptron.inc) — high-accuracy vision AI over the [Model Context Protocol](https://modelcontextprotocol.io), powered by fast, efficient vision-language models.
 
-Give any MCP-compatible agent direct access to Perceptron's Isaac model family for visual question answering, captioning, OCR, and object detection over images and videos.
+Give any MCP-compatible agent direct access to Perceptron Mk1 (closed-source flagship with image + video + reasoning) and the Isaac open-weights family for visual question answering, captioning, OCR, object detection, and video temporal grounding.
 
 ## Available Tools
 
 | Tool | Description |
 |------|-------------|
-| `question` | Visual question answering — ask a question about an image or video (requires `modality`) |
-| `caption` | Captioning — generate concise or detailed descriptions of an image or video (requires `modality`) |
-| `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML (image-only) |
-| `detect` | Object detection — locate and classify objects in an image or video, optionally filtered by class (requires `modality`) |
-| `list_models` | List available Perceptron models and their capabilities |
+| `question` | Visual question answering — ask a question about an image or video. Set `output_format` to `point`, `box`, `polygon`, or `clip` for structured outputs (e.g. coordinates or video timestamps). |
+| `caption` | Captioning — concise or detailed descriptions of an image or video. Supports the same `output_format` options as `question`. |
+| `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML (image-only). |
+| `detect` | Object detection — locate and classify objects in an image or video, optionally filtered by class. |
+| `list_models` | List available Perceptron models and their capabilities. |
 
-`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`) for images or videos, and require a `modality` parameter (`"image"` or `"video"`). `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
+All tools that accept media take a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`). `question`, `caption`, and `detect` require a `modality` parameter (`"image"` or `"video"`); `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
+
+### Reasoning
+
+Pass `reasoning: true` on any tool call to enable chain-of-thought on models that support it (e.g. Perceptron Mk1, Isaac 0.2). The model will think through the problem before producing its final answer.
 
 ### Model Selection
 
-The `model` parameter is optional — if omitted, the default Perceptron model is used. Call `list_models` to discover all available models and their capabilities.
+The `model` parameter is optional — if omitted, a sensible default is chosen for the modality. Call `list_models` to discover all available models and their capabilities.
 
 ## Configuration
 

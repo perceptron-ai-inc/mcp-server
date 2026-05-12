@@ -40,13 +40,13 @@ export function createPerceptronServer(): McpServer {
       version: "0.2.0",
     },
     {
-      instructions: `Perceptron MCP Server — high-accuracy visual perception powered by fast, efficient vision-language models.
+      instructions: `Perceptron MCP Server — high-accuracy visual perception powered by Perceptron Mk1 (closed-source flagship with image + video + reasoning) and the Isaac open-weights family.
 
 When working with tool results, write down any important information you might need later in your response, as the original tool result may be cleared later.
 
 ## Discovering models
 
-Call list_models to see available models. The model parameter is optional — if omitted, the default Perceptron model is used.
+Call list_models to see available models. The model parameter is optional — if omitted, a sensible default is chosen for the modality. Perceptron Mk1 is the recommended choice for video and for tasks that benefit from reasoning.
 
 ## Working with images and videos
 
@@ -57,7 +57,19 @@ Inputs may be:
 - A local file path (/path/to/clip.mp4, ~/photos/image.png)
 - A base64 data URI (data:image/jpeg;base64,...)
 
-Local files are automatically uploaded and made available to the model. Supported formats: JPEG, PNG, WebP, MP4, WebM.`,
+Local files are automatically uploaded and made available to the model. Supported formats: JPEG, PNG, WebP, MP4, WebM.
+
+## Structured outputs
+
+On question and caption, set \`output_format\` to constrain the model's reply:
+- \`point\` — coordinates anchoring the answer to image regions
+- \`box\` — bounding boxes around relevant objects
+- \`polygon\` — fine-grained region outlines
+- \`clip\` — start/end timestamps for video temporal grounding
+
+## Reasoning
+
+Pass \`reasoning: true\` to enable chain-of-thought on models that support it. The model thinks through the problem (returned in a \`<think>\` block) before producing its final answer. Recommended for clipping, complex video Q&A, and detail-heavy image tasks.`,
     }
   );
 
@@ -104,7 +116,12 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "question",
     {
-      description: "Ask a question about an image or video. Accepts a URL or local file path.",
+      description:
+        "Ask a question about an image or video and get a natural-language answer. " +
+        "Accepts a URL or local file path. " +
+        "Set output_format to 'point', 'box', or 'polygon' to ground the answer with image coordinates, " +
+        "or 'clip' (video only) to get <clip start=... end=...> tags marking the relevant temporal segments. " +
+        "Pass reasoning=true for chain-of-thought on supported models (recommended for video and detailed image tasks).",
       annotations: { readOnlyHint: true },
       inputSchema: {
         ...mediaParams,
@@ -123,7 +140,11 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "caption",
     {
-      description: "Generate a caption for an image or video. Accepts a URL or local file path.",
+      description:
+        "Generate a caption for an image or video. " +
+        "Accepts a URL or local file path. " +
+        "Choose 'concise' for a short summary or 'detailed' for a longer description. " +
+        "Supports the same output_format options as 'question' (point/box/polygon/clip) when you want the caption grounded to regions or timestamps.",
       annotations: { readOnlyHint: true },
       inputSchema: {
         ...mediaParams,
@@ -161,7 +182,11 @@ Local files are automatically uploaded and made available to the model. Supporte
   server.registerTool(
     "detect",
     {
-      description: "Detect objects in an image or video. Accepts a URL or local file path.",
+      description:
+        "Detect objects in an image or video and return bounding boxes. " +
+        "Accepts a URL or local file path. " +
+        "Pass classes=['person', 'car', ...] to filter detections, or omit it for open-vocabulary detection. " +
+        "Works on video when modality='video' (recommended model: perceptron-mk1).",
       annotations: { readOnlyHint: true },
       inputSchema: {
         ...mediaParams,
