@@ -18,9 +18,10 @@ Give any MCP-compatible agent direct access to Perceptron's Isaac model family f
 | `caption` | Captioning — generate concise or detailed descriptions of an image or video (requires `modality`) |
 | `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML (image-only) |
 | `detect` | Object detection — locate and classify objects in an image or video, optionally filtered by class (requires `modality`) |
+| `clip` | Video temporal grounding — find when an event occurs and return start/end timestamps (video-only) |
 | `list_models` | List available Perceptron models and their capabilities |
 
-`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`) for images or videos, and require a `modality` parameter (`"image"` or `"video"`). `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
+`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`) for images or videos, and require a `modality` parameter (`"image"` or `"video"`). `ocr` is image-only and uses an `image_url` parameter. `clip` is video-only and uses a `video_url` parameter — its replies embed `<clip start=... end=... mention=...>` tags marking the temporal segments that answer the question. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
 
 ### Model Selection
 

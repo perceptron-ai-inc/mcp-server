@@ -37,7 +37,7 @@ export function createPerceptronServer(): McpServer {
   const server = new McpServer(
     {
       name: "perceptron-mcp",
-      version: "0.2.0",
+      version: "0.3.0",
     },
     {
       instructions: `Perceptron MCP Server — high-accuracy visual perception powered by fast, efficient vision-language models.
@@ -50,7 +50,7 @@ Call list_models to see available models. The model parameter is optional — if
 
 ## Working with images and videos
 
-The question, caption, and detect tools accept image or video inputs and require an explicit \`modality\` ("image" or "video"). The ocr tool is image-only.
+The question, caption, and detect tools accept image or video inputs and require an explicit \`modality\` ("image" or "video"). The ocr tool is image-only. The clip tool is video-only and returns temporal segments (start/end timestamps) anchoring the model's answer.
 
 Inputs may be:
 - A URL (https://...) pointing to media
@@ -154,6 +154,35 @@ Local files are automatically uploaded and made available to the model. Supporte
     },
     async ({ image_url, ...rest }) => {
       return callRemote("ocr", { image_url: await resolveMediaUrl(image_url), ...rest });
+    }
+  );
+
+  // --- clip tool ---
+  server.registerTool(
+    "clip",
+    {
+      description:
+        "Find when an event occurs in a video and return one or more start/end timestamps grounding the model's answer. " +
+        "Use this for sports highlights, action labeling, compliance event detection, or any task that turns long video into temporal segments. " +
+        "The model's reply contains inline <clip start=... end=... mention=...> tags — read them to extract timestamps.",
+      annotations: { readOnlyHint: true },
+      inputSchema: {
+        video_url: z.string().describe("Video URL (https://...) or local file path (/path/to/clip.mp4)"),
+        prompt: z.string().describe('Natural-language description of the event to clip, e.g. "Clip when the ball passes through the hoop."'),
+        model: z.string().optional().describe("Model ID (defaults to a clip-capable video model if omitted)"),
+        temperature: z.number().min(0).optional().describe("Sampling temperature"),
+        max_tokens: z.number().int().positive().optional().describe("Maximum tokens to generate"),
+      },
+    },
+    async ({ video_url, prompt, ...rest }) => {
+      return callRemote("question", {
+        media_url: await resolveMediaUrl(video_url),
+        modality: "video",
+        question: prompt,
+        output_format: "clip",
+        reasoning: true,
+        ...rest,
+      });
     }
   );
 
