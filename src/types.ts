@@ -1,9 +1,17 @@
 // Request/response types mirroring the remote Perceptron MCP server's types.rs
 
-export type Modality = "image" | "video";
+export type Modality = "image" | "video" | "audio";
+
+/** Detection is spatial, so it does not accept audio. */
+export type DetectModality = "image" | "video";
+
+export type ReasoningEffort = "none" | "minimal" | "low" | "medium" | "high";
 
 export interface GenerationParams {
+  /** @deprecated Use reasoning_effort */
   reasoning?: boolean;
+  /** Any value other than "none" turns reasoning on */
+  reasoning_effort?: ReasoningEffort;
   temperature?: number;
   top_p?: number;
   top_k?: number;
@@ -12,19 +20,24 @@ export interface GenerationParams {
   max_tokens?: number;
 }
 
-export interface MediaParams {
+export interface MediaParams<M = Modality> {
   media_url: string;
-  modality: Modality;
+  modality: M;
 }
 
-export interface QuestionRequest extends GenerationParams, MediaParams {
+export interface AudioInVideoParams {
+  /** Also process the video's soundtrack. Only valid with modality "video" */
+  enable_audio_in_video?: boolean;
+}
+
+export interface QuestionRequest extends GenerationParams, MediaParams, AudioInVideoParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   question: string;
   output_format?: "point" | "box" | "polygon" | "clip";
 }
 
-export interface CaptionRequest extends GenerationParams, MediaParams {
+export interface CaptionRequest extends GenerationParams, MediaParams, AudioInVideoParams {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   /** Defaults to "concise" */
@@ -40,7 +53,7 @@ export interface OcrRequest extends GenerationParams {
   prompt?: string;
 }
 
-export interface DetectRequest extends GenerationParams, MediaParams {
+export interface DetectRequest extends GenerationParams, MediaParams<DetectModality> {
   /** Uses the default Perceptron model if omitted */
   model?: string;
   classes?: string[];
