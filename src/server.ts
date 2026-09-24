@@ -157,7 +157,9 @@ Local files are automatically uploaded and made available to the model. Supporte
         ...audioInVideoParams,
         model: z.string().optional().describe("Model ID (uses the default Perceptron model if omitted)"),
         style: z.enum(["concise", "detailed"]).default("concise").describe("Caption style (default: concise)"),
-        output_format: outputFormatEnum.optional().describe("Output format: point, box, polygon, or clip"),
+        output_format: outputFormatEnum
+          .optional()
+          .describe("Output format: point, box, polygon, or clip. Defaults to box for images and plain text for video and audio"),
         ...generationParams,
       },
     },

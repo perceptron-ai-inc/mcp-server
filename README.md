@@ -210,6 +210,7 @@ npm test
 - **Added**: `modality: "audio"` on `question` and `caption` (WAV, MP3, FLAC), and `enable_audio_in_video` to analyze a video's soundtrack alongside its frames.
 - **Added**: `reasoning_effort` (`none`, `minimal`, `low`, `medium`, `high`) on every tool. The boolean `reasoning` parameter is deprecated.
 - **Changed**: When `model` is omitted, tools default to `perceptron-mk1.5` (previously `perceptron-mk1`). Pass `model: "perceptron-mk1"` to keep the previous behavior.
+- **Changed**: `caption` without `output_format` returns plain text for video and audio (previously boxes for video). Image captions still default to boxes. Pass `output_format: "box"` to keep the previous behavior on video.
 
 ## License
 
