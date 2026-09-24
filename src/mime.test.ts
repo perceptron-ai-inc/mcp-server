@@ -26,6 +26,13 @@ describe("mime.getType", () => {
     expect(mime.getType("webm")).toBe("video/webm");
   });
 
+  it("resolves supported audio extensions", () => {
+    expect(mime.getType("wav")).toBe("audio/wav");
+    expect(mime.getType("mp3")).toBe("audio/mpeg");
+    // The upload endpoint accepts x-flac as an alias of audio/flac.
+    expect(mime.getType("flac")).toBe("audio/x-flac");
+  });
+
   it("returns null for unknown extensions", () => {
     expect(mime.getType("xyz123")).toBeNull();
     expect(mime.getType("")).toBeNull();

@@ -14,13 +14,15 @@ Give any MCP-compatible agent direct access to Perceptron's Isaac model family f
 
 | Tool | Description |
 |------|-------------|
-| `question` | Visual question answering — ask a question about an image or video (requires `modality`) |
-| `caption` | Captioning — generate concise or detailed descriptions of an image or video (requires `modality`) |
+| `question` | Question answering — ask a question about an image, video, or audio clip (requires `modality`) |
+| `caption` | Captioning — generate concise or detailed descriptions of an image, video, or audio clip (requires `modality`) |
 | `ocr` | Text extraction — pull text from images as plain text, markdown, or HTML (image-only) |
 | `detect` | Object detection — locate and classify objects in an image or video, optionally filtered by class (requires `modality`) |
 | `list_models` | List available Perceptron models and their capabilities |
 
-`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`), or a **base64 data URI** (`data:image/jpeg;base64,...`) for images or videos, and require a `modality` parameter (`"image"` or `"video"`). `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, and WebM.
+`question`, `caption`, and `detect` accept a **URL** (`https://...`), a **local file path** (`/path/to/clip.mp4`, `~/photos/image.png`, `~/recordings/call.wav`), or a **base64 data URI** (`data:image/jpeg;base64,...`), and require a `modality` parameter (`"image"`, `"video"`, or `"audio"`; `detect` accepts image and video). `ocr` is image-only and uses an `image_url` parameter. Local files are automatically uploaded to the Perceptron platform before analysis. Currently supported formats: JPEG, PNG, WebP, MP4, WebM, WAV, MP3, and FLAC.
+
+Video soundtracks are ignored unless `enable_audio_in_video: true` is set with `modality: "video"` on `question` or `caption`. Every tool accepts `reasoning_effort` (`"none"`, `"minimal"`, `"low"`, `"medium"`, or `"high"`) to control how much the model reasons before answering; the boolean `reasoning` parameter is deprecated in its favor.
 
 ### Model Selection
 
@@ -200,6 +202,15 @@ npm run build
 # Run tests
 npm test
 ```
+
+## Release notes
+
+### 0.3.0
+
+- **Added**: `modality: "audio"` on `question` and `caption` (WAV, MP3, FLAC), and `enable_audio_in_video` to analyze a video's soundtrack alongside its frames.
+- **Added**: `reasoning_effort` (`none`, `minimal`, `low`, `medium`, `high`) on every tool. The boolean `reasoning` parameter is deprecated.
+- **Changed**: When `model` is omitted, tools default to `perceptron-mk1.5` (previously `perceptron-mk1`). Pass `model: "perceptron-mk1"` to keep the previous behavior.
+- **Changed**: `caption` without `output_format` returns plain text for video and audio (previously boxes for video). Image captions still default to boxes. Pass `output_format: "box"` to keep the previous behavior on video.
 
 ## License
 
