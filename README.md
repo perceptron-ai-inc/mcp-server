@@ -203,6 +203,14 @@ npm run build
 npm test
 ```
 
+## Release notes
+
+### 0.3.0
+
+- **Added**: `modality: "audio"` on `question` and `caption` (WAV, MP3, FLAC), and `enable_audio_in_video` to analyze a video's soundtrack alongside its frames.
+- **Added**: `reasoning_effort` (`none`, `minimal`, `low`, `medium`, `high`) on every tool. The boolean `reasoning` parameter is deprecated.
+- **Changed**: When `model` is omitted, tools default to `perceptron-mk1.5` (previously `perceptron-mk1`). Pass `model: "perceptron-mk1"` to keep the previous behavior.
+
 ## License
 
 [Apache License 2.0](LICENSE)
